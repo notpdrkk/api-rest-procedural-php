@@ -1,6 +1,6 @@
 <?php
 
-function validateRequiredFields(array $input, array $fields): ?string
+function validatedRequiredFields(array $input, array $fields): ?string
 {
     $missing = [];
 
@@ -17,14 +17,8 @@ function validateRequiredFields(array $input, array $fields): ?string
     return null;
 }
 
-function validateUserFields(array $input): ?string
+function validatedUserFields(array $input): ?string
 {
-    if (isset($input['name'])) {
-        $name = trim($input['name']);
-        if ($name === '') return 'Name cannot be empty';
-        if (strlen($name) > 100) return 'Name must be at most 100 characters';
-    }
-
     if (isset($input['age'])) {
         if (!is_numeric($input['age'])) return 'Age must be a number';
         $age = (int) $input['age'];
