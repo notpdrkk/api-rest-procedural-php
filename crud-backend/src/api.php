@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/controllers.php';
+require __DIR__ . '/config/config.php';
+require __DIR__ . '/controllers.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 

@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . "/../config/config.php";
+require __DIR__ . "/../config/config.php";
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 in_array($origin, $alllowedOrigins) ?
-    header("Access-Control-Allow-Origin: $origin") : null;
+    header("Access-Control-Allow-Origin: *") : null;
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -17,8 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'Options') {
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
 match ($uri) {
-  '/api/users' => require __DIR__. '/../src/api.php',
-  default      => notFound(),
+    '/api/users' => require __DIR__ . '/../api.php',
+    default      => notFound(),
 };
 
 function notFound()

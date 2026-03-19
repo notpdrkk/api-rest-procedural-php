@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../../data/data.json';
+require __DIR__ . '/data.php';
+require __DIR__ . '/validation.php';
 
 function getAllUsers(string $dataFile): array
 {

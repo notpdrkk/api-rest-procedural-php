@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/services.php';
+
 function respond(array $result)
 {
     http_response_code($result['status']);
@@ -13,18 +15,13 @@ function respond(array $result)
 
 function handleGet($dataFile)
 {
-    try {
-        echo json_encode(getAllUsers($dataFile));
-    } catch (\Throwable $e) {
-        http_response_code(500);
-        echo json_encode(['error' => '...']);
-    }
+    echo json_encode(getAllUsers($dataFile));
 }
 
-function handlePost(string $dataFile)
+function handlePost(string $dataFile): void
 {
     try {
-        $input = json_decode(file_get_contents('php://input', true));
+        $input = json_decode(file_get_contents('php://input'), true);
         respond(createUser($dataFile, $input));
     } catch (\Throwable $e) {
         http_response_code(500);
@@ -32,7 +29,8 @@ function handlePost(string $dataFile)
     }
 }
 
-function handleMethodNotAllowed(){
+function handleMethodNotAllowed()
+{
     http_response_code(405);
     echo json_encode(['error' => 'Method not allowed']);
 }
