@@ -76,3 +76,19 @@ function editUser(string $dataFile, ?int $id, ?array $input, bool $partial = fal
 
     return ['data' => $user, 'status' => 200];
 }
+
+function removeUser(string $dataFile, ?int $id): array
+{
+
+    if ($id === null) {
+        return ['error' => 'User not found', 'status' => 400];
+    }
+
+    $user = deleteUser($dataFile, $id);
+
+    if ($user === null) {
+        return ['error' => 'User not found', 'status' => 404];
+    }
+
+    return ['data' => ['deleted' => $user], 'status' => 200];
+}

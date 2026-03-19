@@ -1,11 +1,11 @@
 {
-    "nextId": 4,
+    "nextId": 2,
     "users": [
         {
-            "name": "Ana Silva Junior",
-            "age": "30",
-            "email": "ana.silva2@email.com",
-            "id": 3
+            "name": "pedro ribeiro",
+            "age": 20,
+            "email": "pedro@pedro.com",
+            "id": 1
         }
     ]
 }

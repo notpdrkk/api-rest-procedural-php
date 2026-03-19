@@ -45,3 +45,19 @@ function updateUser(string $dataFile, int $id, array $fields): ?array
 
     return null;
 }
+
+function deleteUser(string $dataFile, int $id): ?array
+{
+
+    $data = loadData($dataFile);
+
+    foreach ($data['users'] as $index => $user) {
+        if ($user['id'] === $id) {
+            array_splice($data['users'], $index, 1);
+            saveData($dataFile, $data);
+            return $user;
+        }
+    }
+
+    return null;
+}

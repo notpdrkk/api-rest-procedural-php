@@ -10,5 +10,6 @@ match ($method) {
     'POST' => handlePost($dataFile),
     'PUT' => handlePut($dataFile),
     'PATCH' => handlePatch($dataFile),
+    'DELETE' => handleDelete($dataFile),
     default => handleMethodNotAllowed()
 };

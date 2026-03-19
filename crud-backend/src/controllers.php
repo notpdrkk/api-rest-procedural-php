@@ -53,6 +53,17 @@ function handlePatch(string $dataFile): void
     }
 }
 
+function handleDelete(string $dataFile): void
+{
+    try {
+        $id = isset($_GET['id']) ? (int) $_GET['id'] : null;
+        respond(removeUser($dataFile, $id));
+    } catch (\Throwable $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Internal server error', 'status' => 500]);
+    }
+}
+
 function handleMethodNotAllowed()
 {
     http_response_code(405);
