@@ -5,7 +5,7 @@ require __DIR__ . "/../config/config.php";
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 in_array($origin, $alllowedOrigins) ?
-    header("Access-Control-Allow-Origin: *") : null;
+    header("Access-Control-Allow-Origin: $origin") : null;
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 

@@ -30,3 +30,18 @@ function insertUser(string $dataFile, array $user): array
     saveData($dataFile, $data);
     return $user;
 }
+
+function updateUser(string $dataFile, int $id, array $fields): ?array
+{
+    $data = loadData($dataFile);
+
+    foreach ($data['users'] as $index => $user) {
+        if ($user['id'] === $id) {
+            $data['users'][$index] = array_merge($user, $fields);
+            saveData($dataFile, $data);
+            return $data['users'][$index];
+        }
+    }
+
+    return null;
+}
