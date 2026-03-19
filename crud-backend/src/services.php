@@ -8,7 +8,6 @@ function getAllUsers(string $dataFile): array
     return ['users' => $data['users']];
 }
 
-
 function createUser(string $dataFile, ?array $input)
 {
     if (!is_array($input)) {
@@ -16,6 +15,7 @@ function createUser(string $dataFile, ?array $input)
     }
 
     $error = validatedRequiredFields($input, ['name', 'age', 'email']);
+    
     if ($error) {
         return ['error' => $error, 'status' => 400];
     }

@@ -1,6 +1,6 @@
 <?php
 
-$dataFile = __DIR__ . '/../data/data.json';
+$dataFile = __DIR__ . '/../../data/data.json';
 
 $alllowedOrigins = [
     'http://localhost:8080',

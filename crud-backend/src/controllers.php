@@ -23,7 +23,6 @@ function handleGet($dataFile)
 
 function handlePost(string $dataFile)
 {
-
     try {
         $input = json_decode(file_get_contents('php://input', true));
         respond(createUser($dataFile, $input));
@@ -31,4 +30,9 @@ function handlePost(string $dataFile)
         http_response_code(500);
         echo json_encode(['error' => 'Internal server error']);
     }
+}
+
+function handleMethodNotAllowed(){
+    http_response_code(405);
+    echo json_encode(['error' => 'Method not allowed']);
 }

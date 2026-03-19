@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../config/config.php";
 
-$origin = $_SERVER['HTTP_ORIGIN'] ?? null;
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 in_array($origin, $alllowedOrigins) ?
     header("Access-Control-Allow-Origin: $origin") : null;
@@ -17,12 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'Options') {
 $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
 match ($uri) {
-    'api/users' => require __DIR__ . "/../../src/api.php",
-    default => notFound(),
+  '/api/users' => require __DIR__. '/../src/api.php',
+  default      => notFound(),
 };
 
 function notFound()
 {
-    http_response_code(404);
+    http_response_code(204);
     echo json_encode(['error' => 'Not found']);
 }
