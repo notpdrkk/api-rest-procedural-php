@@ -1,0 +1,246 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CRUD Users API",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de usuários"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Operações de gerenciamento de usuários"
+    }
+  ],
+  "paths": {
+    "/api/users": {
+      "get": {
+        "tags": ["Users"],
+        "operationId": "listUsers",
+        "summary": "List all users",
+        "responses": {
+          "200": {
+            "description": "Users list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/User" }
+                    }
+                  }
+                },
+                "example": {
+                  "users": [
+                    {
+                      "id": 1,
+                      "name": "João",
+                      "age": 25,
+                      "email": "joao@email.com"
+                    }
+                  ]
+                }
+              }
+            },
+            "post": {
+              "tags": ["Users"],
+              "operationId": "createUser",
+              "summary": "Create a new user",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "$ref": "#/components/schemas/UserInput" },
+                    "example": {
+                      "name": "João",
+                      "age": 25,
+                      "email": "joao@email.com"
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "User created successfully",
+                  "content": {
+                    "application/json": {
+                      "schema": { "$ref": "#/components/schemas/User" }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Invalid request",
+                  "content": {
+                    "application/json": {
+                      "schema": { "$ref": "#/components/schemas/Error" },
+                      "examples": {
+                        "missingFields": {
+                          "summary": "Missing required fields",
+                          "value": { "error": "name, age, email are required" }
+                        },
+                        "invalidAge": {
+                          "summary": "Validation error",
+                          "value": { "error": "Age must be between 1 and 150" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "put": {
+              "tags": ["Users"],
+              "operationId": "replaceUser",
+              "summary": "Update a user (full replacement)",
+              "parameters": [{ "$ref": "#/components/parameters/Id" }],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "$ref": "#/components/schemas/UserInput" }
+                  }
+                }
+              },
+              "responses": {
+                "200": { "description": "User updated successfully" },
+                "400": { "description": "Invalid request" },
+                "404": { "$ref": "#/components/responses/UserNotFound" }
+              }
+            },
+            "patch": {
+              "tags": ["Users"],
+              "operationId": "updateUser",
+              "summary": "Partially update a user",
+              "description": "Updates only the provided fields.",
+              "parameters": [{ "$ref": "#/components/parameters/Id" }],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": { "$ref": "#/components/schemas/UserPartial" },
+                    "example": { "age": 25 }
+                  }
+                }
+              },
+              "responses": {
+                "200": { "description": "User updated successfully" },
+                "404": { "$ref": "#/components/responses/UserNotFound" }
+              }
+            },
+            "delete": {
+              "tags": ["Users"],
+              "operationId": "deleteUser",
+              "summary": "Delete a user",
+              "parameters": [{ "$ref": "#/components/parameters/Id" }],
+              "responses": {
+                "200": {
+                  "description": "User deleted successfully",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "deleted": { "$ref": "#/components/schemas/User" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "400": {
+                  "description": "Missing id query parameter",
+                  "content": {
+                    "application/json": {
+                      "schema": { "$ref": "#/components/schemas/Error" },
+                      "example": { "error": "User id is required" }
+                    }
+                  }
+                },
+                "404": { "$ref": "#/components/responses/UserNotFound" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "User": {
+    "type": "object",
+    "properties": {
+      "id": { "type": "integer", "example": 1, "readOnly": true },
+      "name": { "type": "string", "example": "João", "maxLength": 100 },
+      "age": { "type": "integer", "example": 25, "minimum": 1, "maximum": 150 },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "example": "joao@email.com"
+      }
+    },
+    "required": ["id", "name", "age", "email"]
+  },
+  "UserInput": {
+    "type": "object",
+    "description": "Request body for creating or fully replacing a user",
+    "required": ["name", "age", "email"],
+    "properties": {
+      "name": { "type": "string", "maxLength": 100, "example": "João" },
+      "age": { "type": "integer", "minimum": 1, "maximum": 150, "example": 25 },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "example": "joao@email.com"
+      }
+    }
+  },
+  "UserPartial": {
+    "type": "object",
+    "description": "Request body for partially updating a user — all fields are optional",
+    "properties": {
+      "name": { "type": "string", "maxLength": 100 },
+      "age": { "type": "integer", "minimum": 1, "maximum": 150 },
+      "email": { "type": "string", "format": "email" }
+    }
+  },
+  "Error": {
+    "type": "object",
+    "properties": {
+      "error": { "type": "string", "example": "name, age, email are required" }
+    },
+    "required": ["error"]
+  },
+  "parameters": {
+    "Id": {
+      "name": "id",
+      "in": "query",
+      "required": true,
+      "schema": { "type": "integer" },
+      "description": "Unique user ID",
+      "example": 1
+    }
+  },
+  "responses": {
+    "UserNotFound": {
+      "description": "User not found",
+      "content": {
+        "application/json": {
+          "schema": { "$ref": "#/components/schemas/Error" },
+          "example": { "error": "User not found" }
+        }
+      }
+    },
+    "InternalError": {
+      "description": "Internal server error",
+      "content": {
+        "application/json": {
+          "schema": { "$ref": "#/components/schemas/Error" },
+          "example": { "error": "Internal server error" }
+        }
+      }
+    }
+  }
+}

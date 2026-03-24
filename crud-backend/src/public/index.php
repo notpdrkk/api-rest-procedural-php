@@ -18,6 +18,8 @@ $uri = strtok($_SERVER['REQUEST_URI'], '?');
 
 match ($uri) {
     '/api/users' => require __DIR__ . '/../api.php',
+    'docs' => serveView(__DIR__ . '/../views/index.html'),
+    'openapi.json' => serveJson(__DIR__ . '/../openapi.json'),
     default      => notFound(),
 };
 
@@ -25,4 +27,16 @@ function notFound()
 {
     http_response_code(204);
     echo json_encode(['error' => 'Not found']);
+}
+
+function serveJson(string $file): void
+{
+    header('Content-Type: application/json');
+    echo file_get_contents($file);
+}
+
+function serveView(string $file): void
+{
+    header('Content-Type: text/html');
+    echo file_get_contents($file);
 }

@@ -18,7 +18,7 @@ function handleGet($dataFile)
     echo json_encode(getAllUsers($dataFile));
 }
 
-function handlePost(string $dataFile): void
+function handlePost(string $dataFile)
 {
     try {
         $input = json_decode(file_get_contents('php://input'), true);
